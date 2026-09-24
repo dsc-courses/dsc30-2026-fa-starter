@@ -1,4 +1,4 @@
-# Spring 2024 Starter Code!
+# Fall 2026 Starter Code!
 
 **Note: Please read until the end!**
 
