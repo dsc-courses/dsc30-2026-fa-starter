@@ -8,6 +8,8 @@ import java.util.EmptyStackException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MyStackTest {
+    // Below are some examples of tests for MyStack to give you an idea of how tests should look.
+    // Feel free to add more variables, tests, etc as well as change up the existing tests.
 
     String[] evens;
     MyStack s1;
@@ -69,5 +71,23 @@ class MyStackTest {
             s1.push("too much");
         });
 
+    }
+
+    // You do not have to follow this exact format, but make sure you test all methods
+    // comprehensively (at least 3 calls each) and that you do not have all your calls in one test.
+
+    @Test
+    public void testPeek() {
+        // TODO
+    }
+
+    @Test
+    public void testMultiPush() {
+        // TODO
+    }
+
+    @Test
+    public void testMultiPop() {
+        // TODO
     }
 }
