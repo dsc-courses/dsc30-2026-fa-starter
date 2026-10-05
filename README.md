@@ -25,4 +25,4 @@ And this will keep your remote repository up-to-date with the most recent starte
 
 Good luck!
 
-- DSC30 Staff
+\- DSC30 Staff
