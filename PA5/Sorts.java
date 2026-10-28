@@ -30,6 +30,10 @@ public class Sorts {
         }
     }
 
+    /** Part 3.1: complete the TODO in inPlacePartition; the recursive driver
+     * and swap helper are provided. Keep the first-element pivot for submission.
+     * The complete partition reference for Part 1 is in TRACING_REFERENCE.md.
+     */
     public static void quickSort(int[] array, int start, int end) {
         if (start < end) {
             int pivotIndex = inPlacePartition(array, start, end, start);
@@ -64,7 +68,7 @@ public class Sorts {
         mergeSort(array, start, mid);
         mergeSort(array, mid + 1, end);
         merge(array, start, mid, end);
-        // TRACE HERE: after the complete merged range has been copied back.
+        // Part 1 records both conceptual splits and completed merges; see the tracing reference.
     }
 
     private static void merge(int[] array, int start, int mid, int end) {

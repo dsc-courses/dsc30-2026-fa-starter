@@ -20,11 +20,17 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     for sort, rows in data.groupby("sort_type", sort=False):
         fig, ax = plt.subplots(figsize=(7, 4.5))
-        for (order, pivot), series in rows.groupby(["input_order", "pivot"], dropna=False):
+        rows = rows.copy()
+        def series_name(row):
+            if "series_label" in rows.columns and pd.notna(row["series_label"]):
+                return str(row["series_label"])
+            label = str(row["input_order"])
+            if sort == "quick": label += " / " + str(row["pivot"]) + " pivot"
+            return label
+        rows["display_series"] = rows.apply(series_name, axis=1)
+        for label, series in rows.groupby("display_series", sort=False):
             means = series.groupby("data_size")["run_time_ns"].mean().sort_index() / 1_000_000
-            label = str(order)
-            if sort == "quick": label += " / " + str(pivot) + " pivot"
-            ax.plot(means.index, means.values, marker="o", label=label)
+            ax.scatter(means.index, means.values, label=label)
         ax.set(title=args.title + " — " + sort.title() + " Sort",
                xlabel="Input size (elements)", ylabel="Mean sorting time (ms)")
         ax.legend()

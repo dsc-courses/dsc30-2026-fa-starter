@@ -1,82 +1,96 @@
-/** Hand-entered whole-array snapshots; no sorting code belongs here.
- * No initial snapshot and no extra final snapshot.
- * Insertion/selection: after each outer pass (n-1 snapshots).
- * Quick: after each completed partition; recurse left before right.
- * Merge: after each completed merge; recurse left before right.
- * Preserve repeated states. See TRACING_REFERENCE.md for the exact procedures.
- * int[][] avoids Java generics: each row is one int[] snapshot.
+import java.util.ArrayList;
+
+/** Part 1: enter traces by hand; do not call sorting code to generate answers.
+ * Insertion/selection/quick methods return ArrayList<int[]> (one array per step).
+ * Merge methods return ArrayList<String> to show intermediate split boundaries.
+ * The collection types are supplied; keep the signatures unchanged.
+ * Do not include the original input or append an extra final state.
+ * Preserve unchanged states and use left-before-right recursive order.
+ * See TRACING_REFERENCE.md for exact inputs and recording points.
  */
 public class SortsTracing {
     // Input: [7, 0, 9, 4, 1, 3, 6]
-    public int[][] InsertionSortRandomList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> InsertionSortRandomList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [0, 1, 3, 4, 6, 7, 9]
-    public int[][] InsertionSortSortedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> InsertionSortSortedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [9, 7, 6, 4, 3, 1, 0]
-    public int[][] InsertionSortReversedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> InsertionSortReversedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [7, 0, 9, 4, 1, 3, 6]
-    public int[][] SelectionSortRandomList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> SelectionSortRandomList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [0, 1, 3, 4, 6, 7, 9]
-    public int[][] SelectionSortSortedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> SelectionSortSortedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [9, 7, 6, 4, 3, 1, 0]
-    public int[][] SelectionSortReversedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> SelectionSortReversedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [6, 1, 9, 3, 2]
-    public int[][] QuickSortRandomList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> QuickSortRandomList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [1, 2, 3, 6, 9]
-    public int[][] QuickSortSortedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> QuickSortSortedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
     // Input: [9, 6, 3, 2, 1]
-    public int[][] QuickSortReversedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    public ArrayList<int[]> QuickSortReversedList() {
+        ArrayList<int[]> answer = new ArrayList<int[]>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
-    // Input: [6, 1, 9, 3, 2]
-    public int[][] MergeSortRandomList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    // Input: [7, 0, 9, 4, 1, 3, 6]
+    public ArrayList<String> MergeSortRandomList() {
+        ArrayList<String> answer = new ArrayList<String>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
-    // Input: [1, 2, 3, 6, 9]
-    public int[][] MergeSortSortedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    // Input: [0, 1, 3, 4, 6, 7, 9]
+    public ArrayList<String> MergeSortSortedList() {
+        ArrayList<String> answer = new ArrayList<String>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
-    // Input: [9, 6, 3, 2, 1]
-    public int[][] MergeSortReversedList() {
-        // TODO: Enter each required snapshot by hand.
-        return new int[][] {};
+    // Input: [9, 7, 6, 4, 3, 1, 0]
+    public ArrayList<String> MergeSortReversedList() {
+        ArrayList<String> answer = new ArrayList<String>();
+        // TODO: Add each required state by hand in the specified order.
+        return answer;
     }
 
 }

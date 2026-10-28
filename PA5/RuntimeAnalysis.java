@@ -21,6 +21,7 @@ public class RuntimeAnalysis {
         String output = "sort_runtimes.csv";
         String order = "random";
         String pivot = "first";
+        String seriesLabel = null;
         int[] requestedSizes = null;
         int trials = 5;
         int warmups = 3;
@@ -31,6 +32,9 @@ public class RuntimeAnalysis {
             switch (args[i]) {
                 case "--sort": chosenSort = value; break;
                 case "--output": output = value; break;
+                case "--series-label": seriesLabel = value; break;
+                case "--input-label": order = value; break;
+                case "--pivot-label": pivot = value; break;
                 case "--trials": trials = Integer.parseInt(value); break;
                 case "--warmups": warmups = Integer.parseInt(value); break;
                 case "--seed": seed = Long.parseLong(value); break;
@@ -51,11 +55,15 @@ public class RuntimeAnalysis {
             for (int size : requestedSizes) if (size <= 0) throw new IllegalArgumentException("Sizes must be positive");
         }
 
+        if (seriesLabel != null && !seriesLabel.matches("[A-Za-z0-9 _.-]+"))
+            throw new IllegalArgumentException("Series label: use letters, digits, spaces, underscores, dots or hyphens");
+        if (!order.matches("[A-Za-z0-9_-]+") || !pivot.matches("[A-Za-z0-9_-]+"))
+            throw new IllegalArgumentException("Input/pivot labels must be simple words without commas");
         Path path = Path.of(output);
         // CREATE_NEW protects earlier measurements, including under concurrent runs.
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8,
                 java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)) {
-            writer.write("sort_type,input_order,pivot,data_size,trial,run_time_ns,seed,warmups\n");
+            writer.write("sort_type,input_order,pivot,data_size,trial,run_time_ns,seed,warmups,series_label\n");
             for (String sort : SORTS) {
                 if (!chosenSort.equals("all") && !chosenSort.equals(sort)) continue;
                 int[] sizes = requestedSizes != null ? requestedSizes :
@@ -76,7 +84,8 @@ public class RuntimeAnalysis {
                         }
                         if (trial >= 0) {
                             writer.write(sort + "," + order + "," + (sort.equals("quick") ? pivot : "n/a") + "," +
-                                    size + "," + trial + "," + elapsed + "," + seed + "," + warmups + "\n");
+                                    size + "," + trial + "," + elapsed + "," + seed + "," + warmups + "," +
+                                    (seriesLabel == null ? "" : seriesLabel) + "\n");
                         }
                     }
                     writer.flush();
