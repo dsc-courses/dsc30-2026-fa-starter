@@ -3,29 +3,55 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Random;
 
-/** Provided timing harness. Generation, copying, checking and output are untimed.
- * CLI: --sort all|insertion|selection|quick|merge --sizes 250,500,1000
- *      --trials 5 --warmups 3 --seed 305 --output sort_runtimes.csv
- * Existing CSVs are never overwritten: choose a different output path per run.
- */
+/** Timing harness. Generation, copying, correctness checking and output are untimed. */
 public class RuntimeAnalysis {
+    // STUDENT SETTINGS: choose an experiment, then use your IDE's Run button.
+    // task1, task2, task3, task4, task5_ascending, task5_descending,
+    // task6_ascending, task6_descending
+    private static final String EXPERIMENT = "task1";
+    // null uses the defaults below. Example override: {250, 500, 1000, 2000}
+    // Use matching sizes for every series in a comparison.
+    private static final int[] INPUT_SIZES = null;
+    private static final int TRIALS = 5;
+    private static final int WARMUPS = 3;
+    private static final long SEED = 305;
+
     private static final String[] SORTS = {"insertion", "selection", "quick", "merge"};
     private static final int[] SMALL = {250, 500, 1000, 2000, 4000};
     private static final int[] LARGE = {1000, 2000, 4000, 8000, 16000};
 
+    // Presets select the sort, labels and filename ONLY.
+    // You must implement each task's generator and any pivot change yourself.
+    private static String[] experimentSettings(String experiment) {
+        switch (experiment) {
+            case "task1": return new String[]{"all", "random", "first"};
+            case "task2": return new String[]{"insertion", "favorable", "first"};
+            case "task3": return new String[]{"quick", "unfavorable", "first"};
+            case "task4": return new String[]{"quick", "unfavorable", "middle"};
+            case "task5_ascending": return new String[]{"selection", "ascending", "first"};
+            case "task5_descending": return new String[]{"selection", "descending", "first"};
+            case "task6_ascending": return new String[]{"merge", "ascending", "first"};
+            case "task6_descending": return new String[]{"merge", "descending", "first"};
+            default: throw new IllegalArgumentException("Unknown EXPERIMENT: " + experiment);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        String chosenSort = "all";
-        String output = "sort_runtimes.csv";
-        String order = "random";
-        String pivot = "first";
+        String[] settings = experimentSettings(EXPERIMENT);
+        String chosenSort = settings[0];
+        String order = settings[1];
+        String pivot = settings[2];
+        String output = EXPERIMENT + ".csv";
         String seriesLabel = null;
-        int[] requestedSizes = null;
-        int trials = 5;
-        int warmups = 3;
-        long seed = 305;
+        int[] requestedSizes = INPUT_SIZES;
+        int trials = TRIALS;
+        int warmups = WARMUPS;
+        long seed = SEED;
+        // Optional command-line overrides remain available.
         for (int i = 0; i < args.length; i += 2) {
             if (i + 1 >= args.length) throw new IllegalArgumentException("Missing value: " + args[i]);
             String value = args[i + 1];
@@ -43,7 +69,6 @@ public class RuntimeAnalysis {
                     requestedSizes = new int[pieces.length];
                     for (int j = 0; j < pieces.length; j++) requestedSizes[j] = Integer.parseInt(pieces[j]);
                     break;
-
                 default: throw new IllegalArgumentException("Unknown option: " + args[i]);
             }
         }
@@ -52,17 +77,22 @@ public class RuntimeAnalysis {
         for (String sort : SORTS) validSort |= chosenSort.equals(sort);
         if (!validSort) throw new IllegalArgumentException("Unknown sort: " + chosenSort);
         if (requestedSizes != null) {
+            if (requestedSizes.length == 0) throw new IllegalArgumentException("Provide at least one input size");
             for (int size : requestedSizes) if (size <= 0) throw new IllegalArgumentException("Sizes must be positive");
         }
-
         if (seriesLabel != null && !seriesLabel.matches("[A-Za-z0-9 _.-]+"))
             throw new IllegalArgumentException("Series label: use letters, digits, spaces, underscores, dots or hyphens");
         if (!order.matches("[A-Za-z0-9_-]+") || !pivot.matches("[A-Za-z0-9_-]+"))
             throw new IllegalArgumentException("Input/pivot labels must be simple words without commas");
         Path path = Path.of(output);
-        // CREATE_NEW protects earlier measurements, including under concurrent runs.
+        if (Files.exists(path)) {
+            throw new IOException("Results already exist: " + path.toAbsolutePath()
+                    + ". Rename that CSV before rerunning this experiment. Earlier results are preserved.");
+        }
+        System.out.println("Experiment: " + EXPERIMENT + "; input label: " + order + "; pivot label: " + pivot);
+        System.out.println("Labels do not change your generator or pivot implementation.");
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8,
-                java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)) {
+                StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)) {
             writer.write("sort_type,input_order,pivot,data_size,trial,run_time_ns,seed,warmups,series_label\n");
             for (String sort : SORTS) {
                 if (!chosenSort.equals("all") && !chosenSort.equals(sort)) continue;
@@ -70,18 +100,18 @@ public class RuntimeAnalysis {
                         (sort.equals("insertion") || sort.equals("selection") ? SMALL : LARGE);
                 for (int size : sizes) {
                     for (int trial = -warmups; trial < trials; trial++) {
-                        // Identical seed/size/trial gives identical inputs across algorithms.
                         Random random = new Random(seed + 1_000_003L * size + trial);
                         int[] input = generateArray(size, random);
+                        if (input == null || input.length != size)
+                            throw new IllegalStateException("generateArray must return exactly " + size + " elements");
                         int[] expected = input.clone();
                         Arrays.sort(expected);
                         int[] working = input.clone();
                         long begin = System.nanoTime();
-                        sort(sort, working, pivot);
+                        sort(sort, working);
                         long elapsed = System.nanoTime() - begin;
-                        if (!Arrays.equals(expected, working)) {
+                        if (!Arrays.equals(expected, working))
                             throw new IllegalStateException(sort + " produced incorrect output at size " + size);
-                        }
                         if (trial >= 0) {
                             writer.write(sort + "," + order + "," + (sort.equals("quick") ? pivot : "n/a") + "," +
                                     size + "," + trial + "," + elapsed + "," + seed + "," + warmups + "," +
@@ -96,14 +126,14 @@ public class RuntimeAnalysis {
         System.out.println("Wrote " + path.toAbsolutePath());
     }
 
-    /** Modify this generator for the input-order experiments; preserve exact size. */
+    /** Modify for the input-order experiments; preserve the requested size. */
     public static int[] generateArray(int size, Random random) {
         int[] input = new int[size];
         for (int i = 0; i < size; i++) input[i] = random.nextInt(1001);
         return input;
     }
 
-    private static void sort(String sort, int[] array, String pivot) {
+    private static void sort(String sort, int[] array) {
         switch (sort) {
             case "insertion": Sorts.insertionSort(array, 0, array.length - 1); break;
             case "selection": Sorts.selectionSort(array, 0, array.length - 1); break;
@@ -112,5 +142,4 @@ public class RuntimeAnalysis {
             default: throw new IllegalArgumentException(sort);
         }
     }
-
 }
