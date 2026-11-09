@@ -34,16 +34,24 @@ public static ArrayList<String>  insertElements() {
 
 }
 
-public static ArrayList<String>  deleteElements() {
+public static ArrayList<ArrayList<String>>  deleteElements() {
 
-	ArrayList<String> answer_pr2 = new ArrayList<>(11);
+	ArrayList<ArrayList<String>> answer_pr2 = new ArrayList<>(5);
 	
 	/*
 	 * Please refer to the example in insertElements() if you lose track
-	 * of how to properly enter your answers
+	 * of how to properly enter your answers.
+	 *
+	 * Each deletion is its own ArrayList of level strings. Add that list
+	 * to answer_pr2, once for each of the 5 deletions.
+	 *
+	 * ArrayList<String> afterDeletion = new ArrayList<>();
+	 * afterDeletion.add("1");          --> level 1 (root level)
+	 * afterDeletion.add("2, X");       --> level 2
+	 * answer_pr2.add(afterDeletion);
 	 */
 
-	//TODO: add strings that represent the BST after 5 deletions. 
+	//TODO: add ArrayLists of strings that represent the BST after each of 5 deletions. 
 	return answer_pr2;
 
 }
