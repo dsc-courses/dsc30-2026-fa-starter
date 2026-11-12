@@ -75,29 +75,56 @@ public class MNIST {
     }
 
     /**
-     * Creates a queue entry for a training image.
-     * Provided code. The priority is the distance and the value is the index.
+     * Computes the distance from the input to every training image.
+     * Provided code. Position i corresponds to training image i.
      *
      * @param image the flattened input image
-     * @param trainingIndex the index of the training image
-     * @return the entry for that training image
+     * @return one distance for each training image
+     * @throws IllegalArgumentException if the input has the wrong length
      */
-    public static HeapEntry createEntry(float[] image, int trainingIndex) {
-        float distance = totalDist(image, TRAIN_IMAGES[trainingIndex]);
-        return new HeapEntry(distance, trainingIndex);
+    public static float[] calculateDistances(float[] image) throws IllegalArgumentException {
+        float[] distances = new float[TRAIN_IMAGES.length];
+        for (int index = 0; index < TRAIN_IMAGES.length; index++) {
+            distances[index] = totalDist(image, TRAIN_IMAGES[index]);
+        }
+        return distances;
     }
 
     /**
-     * Looks up the training image and label associated with an entry.
-     * Provided code.
+     * Looks up the training images corresponding to selected distances.
+     * Provided code. Equal distances are matched to distinct training images.
      *
-     * @param entry an entry returned by the priority queue
-     * @return the corresponding training image, label, and distance
+     * @param allDistances the array returned by calculateDistances
+     * @param closestDistances the selected distances in closest-first order
+     * @return the corresponding images, labels, and distances in the same order
+     * @throws IllegalArgumentException if the arrays cannot identify distinct matches
      */
-    public static DataHolder toDataHolder(HeapEntry entry) {
-        int trainingIndex = entry.getValue();
-        return new DataHolder(TRAIN_LABELS[trainingIndex],
-                entry.getPriority(), TRAIN_IMAGES[trainingIndex]);
+    public static DataHolder[] toDataHolders(float[] allDistances,
+            float[] closestDistances) throws IllegalArgumentException {
+        if (allDistances.length != TRAIN_IMAGES.length
+                || closestDistances.length > allDistances.length) {
+            throw new IllegalArgumentException("Invalid distance array lengths.");
+        }
+
+        DataHolder[] matches = new DataHolder[closestDistances.length];
+        boolean[] selected = new boolean[allDistances.length];
+        for (int match = 0; match < closestDistances.length; match++) {
+            int trainingIndex = -1;
+            for (int index = 0; index < allDistances.length; index++) {
+                if (!selected[index]
+                        && Float.compare(allDistances[index], closestDistances[match]) == 0) {
+                    trainingIndex = index;
+                    break;
+                }
+            }
+            if (trainingIndex == -1) {
+                throw new IllegalArgumentException("Selected distance has no unused match.");
+            }
+            selected[trainingIndex] = true;
+            matches[match] = new DataHolder(TRAIN_LABELS[trainingIndex],
+                    allDistances[trainingIndex], TRAIN_IMAGES[trainingIndex]);
+        }
+        return matches;
     }
 
     /**

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Starter tests for dHeap.
  * Add tests for every public constructor and method as specified in Part 2.
  * Include both min-heaps and max-heaps, different branching factors,
- * resizing, duplicate priorities, and all specified exceptions.
+ * resizing, duplicate values, and all specified exceptions.
  * Style is not graded for this file.
  */
 public class dHeapTest {
@@ -33,11 +33,11 @@ public class dHeapTest {
 
     @Test
     public void testAddAndElement() {
-        HeapEntry entry = new HeapEntry(2.5f, 42);
-        maxHeap.add(entry);
+        Float value = 2.5f;
+        maxHeap.add(value);
 
         assertEquals(1, maxHeap.size());
-        assertSame(entry, maxHeap.element());
+        assertEquals(value, maxHeap.element());
     }
 
     // TODO: Write the remaining tests required by Part 2.

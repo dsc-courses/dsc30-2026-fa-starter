@@ -6,11 +6,11 @@
 import java.util.NoSuchElementException;
 
 // TODO: Add Javadoc.
-public class dHeap implements HeapInterface {
+public class dHeap {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int BINARY_HEAP = 2;
 
-    private HeapEntry[] heap;
+    private Float[] heap;
     private int d;
     private int nelems;
     private boolean isMaxHeap;
@@ -31,34 +31,29 @@ public class dHeap implements HeapInterface {
     }
 
     // TODO: Add Javadoc.
-    @Override
     public int size() {
         // TODO
         return 0;
     }
 
     // TODO: Add Javadoc.
-    @Override
-    public void add(HeapEntry entry) {
+    public void add(Float value) {
         // TODO
     }
 
     // TODO: Add Javadoc.
-    @Override
-    public HeapEntry remove() {
+    public Float remove() {
         // TODO
         return null;
     }
 
     // TODO: Add Javadoc.
-    @Override
     public void clear() {
         // TODO
     }
 
     // TODO: Add Javadoc.
-    @Override
-    public HeapEntry element() {
+    public Float element() {
         // TODO
         return null;
     }

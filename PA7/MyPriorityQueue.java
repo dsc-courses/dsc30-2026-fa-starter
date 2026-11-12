@@ -13,13 +13,13 @@ public class MyPriorityQueue {
     }
 
     // TODO: Add Javadoc.
-    public boolean offer(HeapEntry entry) {
+    public boolean offer(Float value) {
         // TODO
         return false;
     }
 
     // TODO: Add Javadoc.
-    public HeapEntry poll() {
+    public Float poll() {
         // TODO
         return null;
     }
@@ -30,7 +30,7 @@ public class MyPriorityQueue {
     }
 
     // TODO: Add Javadoc.
-    public HeapEntry peek() {
+    public Float peek() {
         // TODO
         return null;
     }
