@@ -1,0 +1,86 @@
+/*
+ * Name: TODO
+ * PID: TODO
+ */
+
+import java.util.NoSuchElementException;
+
+// TODO: Add Javadoc.
+public class dHeap implements HeapInterface {
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final int BINARY_HEAP = 2;
+
+    private HeapEntry[] heap;
+    private int d;
+    private int nelems;
+    private boolean isMaxHeap;
+
+    // TODO: Add Javadoc.
+    public dHeap() {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    public dHeap(int heapSize) {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    public dHeap(int d, int heapSize, boolean isMaxHeap) {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    @Override
+    public int size() {
+        // TODO
+        return 0;
+    }
+
+    // TODO: Add Javadoc.
+    @Override
+    public void add(HeapEntry entry) {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    @Override
+    public HeapEntry remove() {
+        // TODO
+        return null;
+    }
+
+    // TODO: Add Javadoc.
+    @Override
+    public void clear() {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    @Override
+    public HeapEntry element() {
+        // TODO
+        return null;
+    }
+
+    // TODO: Add Javadoc.
+    private int parent(int index) {
+        // TODO
+        return 0;
+    }
+
+    // TODO: Add Javadoc.
+    private void bubbleUp(int index) {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    private void trickleDown(int index) {
+        // TODO
+    }
+
+    // TODO: Add Javadoc.
+    private void resize() {
+        // TODO
+    }
+}
