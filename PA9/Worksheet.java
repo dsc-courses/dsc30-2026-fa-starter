@@ -21,12 +21,6 @@ public class Worksheet {
         return new ArrayList<>();
     }
 
-    /** Q1.3 Graph 1 adjacency list, with rows and neighbors in alphabetical order. */
-    public static String[][] q3aAdjacencyList() {
-        // TODO: Replace this empty result with your answer.
-        return new String[0][0];
-    }
-
     /** Q1.3 Graph 1 BFS visit order starting at A. */
     public static String[] q3aBfs() {
         // TODO: Replace this empty result with your answer.
@@ -37,12 +31,6 @@ public class Worksheet {
     public static String[] q3aDfs() {
         // TODO: Replace this empty result with your answer.
         return new String[0];
-    }
-
-    /** Q1.3 Graph 2 adjacency list, with rows and neighbors in alphabetical order. */
-    public static String[][] q3bAdjacencyList() {
-        // TODO: Replace this empty result with your answer.
-        return new String[0][0];
     }
 
     /** Q1.3 Graph 2 BFS visit order starting at I. */
